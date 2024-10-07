@@ -5,12 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Diagnostics;
 using WithoutEntityFWLoginSys.Models;
+using System.Data.SqlClient;
 
 namespace WithoutEntityFWLoginSys.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        private readonly string _connectionString = "Server=TASLAPTOP01;Database=SchoolManagement;User Id=sa;Password=1234;TrustServerCertificate=True;";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -26,14 +29,16 @@ namespace WithoutEntityFWLoginSys.Controllers
         public async Task<IActionResult> Login(string Username, string Password)
         {
             // Validate the credentials (this is a basic example)
-            if (Username == "admin" && Password == "12345")
+            //if (Username == "admin" && Password == "12345")
+            bool IsValid = await ValidateUserAsync(Username, Password);
+            if (IsValid)
             {
                 // Create claims that represent the user
                 var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, Username),
-                new Claim(ClaimTypes.Role, "Admin") // You can use roles too
-            };
+                {
+                    new Claim(ClaimTypes.Name, Username),
+                    new Claim(ClaimTypes.Role, "Admin") // You can use roles too
+                };
 
                 // Create identity and principal
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -56,6 +61,24 @@ namespace WithoutEntityFWLoginSys.Controllers
             // If invalid, stay on the same page and show an error message (or other logic)
             ViewBag.Error = "Invalid username or password";
             return View(); // Assuming the login form is on the Index view
+        }
+        
+
+        public async Task<bool> ValidateUserAsync(string username, string password)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM ApplicationUsers WHERE Username = @name AND Password = @pass";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@name", username);
+                command.Parameters.AddWithValue("@pass", password);
+
+                await connection.OpenAsync();
+                int? count = (int?)await command.ExecuteScalarAsync(); // Returns the count of matching rows
+
+                return count > 0; // If at least one row is returned, credentials are valid
+            }
         }
 
         public async Task<IActionResult> Logout()
