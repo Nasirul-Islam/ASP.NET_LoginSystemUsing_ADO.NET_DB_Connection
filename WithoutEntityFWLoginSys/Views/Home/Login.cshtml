@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Login Page";
+    // Specify the Path to my layout page
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<section>
+    <div class="box">
+        <form method="post" asp-controller="Home" asp-action="Login" class="form">
+            <h2>Sign in</h2>
+            <div class="inputBox">
+                <input type="text" name="Username" required="required">
+                <span>Username</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="password" name="Password" required="required">
+                <span>Password</span>
+                <i></i>
+            </div>
+            <div class="links">
+                <a href="#">Forget Password</a>
+                <a href="#">Sign up</a>
+            </div>
+            @if (ViewBag.Error != null)
+            {
+                <p class="text-danger">@ViewBag.Error</p>
+            }
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</section>

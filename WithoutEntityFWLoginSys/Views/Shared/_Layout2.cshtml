@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WithoutEntityFWLoginSys</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WithoutEntityFWLoginSys.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+    </header>
+    <main role="main" class="">
+        @RenderBody()
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+
+<!--
+<div class="box">
+    <div class="form">
+        <h2>Sign in</h2>
+        <div class="inputBox">
+            <input type="text" required="required">
+            <span>Username</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <input type="password" required="required">
+            <span>Password</span>
+            <i></i>
+        </div>
+        <div class="links">
+            <a href="#">Forget Password</a>
+            <a href="#">Sign up</a>
+        </div>
+        <input type="submit" value="Login">
+    </div>
+</div>
+-->
